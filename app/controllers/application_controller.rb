@@ -20,9 +20,14 @@ class ApplicationController < ActionController::Base
 	end
 
 	def output2
+		p "*************************************************************"
+		p " Starting function output2 in application_controller"
+		p "*************************************************************"
+		p "Deleting all records from TwoOutput database"
 		@met = FALSE
 		TwoOutput.destroy_all
-
+		p "*************************************************************"
+		p "Setting variables"
 		@resultcount = 0
 		@criteriacount = 0
 		@arow = 0
@@ -42,7 +47,8 @@ class ApplicationController < ActionController::Base
 		greaterthanequalto = :>=
 		equalto = :==
 		nothing = :''
-
+		p "*************************************************************"
+		p "Pulling data from database"
 		db = SQLite3::Database.open( "db/development.sqlite3" ) 
 		@tworesult = db.execute( "select * from two_results" )
 		@tworesult.flatten!
@@ -53,57 +59,33 @@ class ApplicationController < ActionController::Base
 		@twocriteriacounta = db.execute ( "select count(*) from two_criteria" )
 		@twocriteriacountb = @twocriteriacounta.flatten!
 		@twocriteriacount = @twocriteriacountb[0]
-		print String(@twocriteriacountb[0]) << " @twocriteriacountb "
-		puts " "
+		p "*************************************************************"
+		p "Starting loop process"
 		until @rescol == 2 do
+			p "*************************************************************"
+			p "This is loop number #{@rescol} of the until @rescol statement" 
 			until @resultcount == @tworesultcount do
+				p "*************************************************************"
+				p "This is loop number #{@resultcount} of the until @resultcount statement" 
 				until @criteriacount == (@twocriteriacount) do
-					print "@resultcount is #{@resultcount}"
-					puts " "
-					print "@tworesultcount is #{@tworesultcount}"
-					puts " "
-					print "@criteriacount is #{@criteriacount}"
-					puts " "
-					print "@twocriteriacount is #{@twocriteriacount}"
-					puts " "
-					print "@alowcricol is #{@alowcricol}"
-					puts " "
-					print "@twocriteria is #{@twocriteria}"
-					puts " "
-					print "@twocriteria[@criteriacount][@alowcricol]) is #{@twocriteria[@criteriacount][@alowcricol]}"
-					puts " "
-					print "@twocriteria[0][1] is #{@twocriteria[0][1]}"
-					puts " "
-					print "@twocriteria[0][2] is #{@twocriteria[0][2]}"
-					puts " "
-					print "@twocriteria[1][3] is #{@twocriteria[1][3]}"
-					puts " "
-					print "@twocriteria[1][4] is #{@twocriteria[1][4]}"
-					puts " "
-					print String("End of print batch")
-					puts " "
-					puts " "
+					p "*************************************************************"
+					p "This is loop number #{@criteriacount} of the until @criteriacount statement" 
+					p "@resultcount is #{@resultcount}"
+					p "@tworesultcount is #{@tworesultcount}"
+					p "@twocriteriacount is #{@twocriteriacount}"
+					p "@alowcricol is #{@alowcricol}"
+					p "@twocriteria is #{@twocriteria}"
+					p "@twocriteria[@criteriacount][@alowcricol] is #{@twocriteria[@criteriacount][@alowcricol]}"
+					p "@criteriacount is #{@criteriacount}"
+					p "@rescol is #{@rescol}"
+					p "@tworesult[@resultcount][@rescol] is #{@tworesult[@resultcount][@rescol]}"	
+					p "@twocriteria[@criteriacount][@alowvalcol] is #{@twocriteria[@criteriacount][@alowvalcol]}"
+					p "@tworesult[@resultcount][@rescol] is #{@tworesult[@resultcount][@rescol]}"
+					p "@twocriteria[@criteriacount][@alowvalcol] is #{@twocriteria[@criteriacount][@alowvalcol]}"
+					p "At first case check"
 					@aif = @twocriteria[@criteriacount][@alowcricol]
-					puts " "
-					@bif = @twocriteria[@criteriacount][@ahicricol]
-					print "@aif is #{@aif}"
-					puts " "
-					print "@bif is #{@bif}"
-					puts " "
-					print "@aif == 5 is #{@aif == "5"}"
-					puts " "
-					if @aif == "5"
-					#if ((@twocriteria[@criteriacount][@alowcricol]) == 5)
-						print "That worked"
-						puts " "
-					else
-						print "That didn't work"
-						puts " "
-						print equalto
-					end
-						
+					p "@aif is #{@aif}"
 					case @aif
-					#case @twocriteria[@criteriacount][@alowcricol]
 						when "1"
 							@lowcriteria = greaterthan
 						when "2"
@@ -113,18 +95,16 @@ class ApplicationController < ActionController::Base
 						when "4"
 							@lowcriteria = lessthanequalto
 						when "5"
-							puts "Made it here 1"
-							puts " "
 							@lowcriteria = equalto
 						when ''
-							"Made it here by mistake"
-							puts " "
 							#TODO
 					end
-					puts "Made it here 2"
+					p "@lowcriteria is #{@lowcriteria}"
+					p "At second case check"
+					@bif = @twocriteria[@criteriacount][@ahicricol]
+					p "@bif is #{@bif}"
 					case @bif
-					#case @twocriteria[@criteriacount][@ahicricol]
-						when "1"
+					when "1"
 							@hicriteria = greaterthan
 						when "2"
 							@hicriteria = lessthan
@@ -137,37 +117,9 @@ class ApplicationController < ActionController::Base
 						when "6"
 							#TODO
 					end
-					print String( " Second batch of prints ")
-					puts " "
-					print "@criteriacount is #{@criteriacount}"
-					puts " "
-					print "@rescol is #{@rescol}"
-					puts " "
-					print "@resultcount is #{@resultcount}"
-					puts " "
-					print String(@tworesult[@resultcount][@rescol]) << ( " @tworesult[@resultcount][@rescol] " )
-					puts " "
-					print String(@twocriteria) << ( " @twocriteria " )
-					puts " "
-					print String(@lowcriteria) << ( " @lowcriteria ")
-					puts " "
-					print String(@twocriteria[@criteriacount][@alowvalcol]) << ( " @twocriteria[@criteriacount][@alowvalcol] " )
-					puts " "
-					#print String(@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][@alowvalcol])) << ("First if check")
-					#puts " "
-					#print String(@tworesult[@resultcount][@ahivalcol].public_send(@hicriteria, @twocriteria[@criteriacount][@ahivalcol]))	<< ("Second if check")
-					#puts " "
-					print String( " End of second batch of prints " )
-					puts " "
-					puts " "
-					print "(@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][@alowvalcol])) is #{(@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][@alowvalcol]))}" 
-					puts " "
-					print "@tworesult[@resultcount][@rescol] is #{@tworesult[@resultcount][@rescol]}"
-					puts " "
-					print "@lowcriteria is #{@lowcriteria}"
-					puts " "
-					print "@twocriteria[@criteriacount][@alowvalcol] is #{@twocriteria[@criteriacount][@alowvalcol]}"
-					puts " "
+					p "@hicriteria is #{@hicriteria}"
+					p "At condition check"
+					p "(@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][@alowvalcol])) is #{(@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][@alowvalcol]))}" 
 					if ((@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][@alowvalcol])) && (@tworesult[@resultcount][@ahivalcol].public_send(@hicriteria, @twocriteria[@criteriacount][@ahivalcol])))
 						if @rescol == 1
 							@ares = @tworesults[@resultcount][@rescol]
@@ -176,27 +128,25 @@ class ApplicationController < ActionController::Base
 						end
 					@met = TRUE
 					end
-					print "@ares is #{@ares}"
-					puts " "
-					print "@bres is #{@bres}"
-					puts " "
+					p "@ares is #{@ares}"
+					p "@bres is #{@bres}"
+					p "Adding one to @criteriacount"
 					@criteriacount = @criteriacount + 1
 				end
+				p "Adding one to @resultcount"
 			@resultcount = @resultcount+1
+			@criteriacount = 0
 			end
+			p "Updating Output database"
 			if @met = TRUE
 				@two_output = TwoOutput.new({"O1"=>@ares, "O2"=>@bres})
 				@two_output.save
 				@met = FALSE
+				p "A record has been added to TwoOutput database"
 			end
+		p "Adding one to @rescol"
 		@rescol = @rescol+1
 		end
-		#@atest = TwoResult.all
-		#until a == @atest.count do
-		#	puts @atest[a][1]
-		#	puts @atest[a][2]
-		#	a = a+1
-		#end
 	end
 
 	def output2b
