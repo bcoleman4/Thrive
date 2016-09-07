@@ -24,7 +24,8 @@ class ApplicationController < ActionController::Base
 		p " Starting function output2 in application_controller"
 		p "*************************************************************"
 		p "Deleting all records from TwoOutput database"
-		@met = FALSE
+		@amet = FALSE
+		@bmet = FALSE
 		TwoOutput.destroy_all
 		p "*************************************************************"
 		p "Setting variables"
@@ -32,15 +33,11 @@ class ApplicationController < ActionController::Base
 		@criteriacount = 0
 		@arow = 0
 		@rescol = 1
-		@alowvalcol = 1
-		@alowcricol = 2
-		@ahivalcol = 3
-		@ahicricol = 4
-		@blowvalcol = 5
-		@blowcricol = 6
-		@bhivalcol = 7
-		@bhicricol = 8
-
+		@criflik = 4
+		@lowvalcol = 1 #(@lowvalcol + ((@rescol - 1) * @criflik))
+		@lowcricol = 2 #(@lowcricol + ((@rescol - 1) * @criflik))
+		@hivalcol = 3 #(@hivalcol + ((@rescol - 1) * @criflik))
+		@hicricol = 4 #(@hicricol + ((@rescol - 1) * @criflik))
 		lessthan = :<
 		greaterthan = :>
 		lessthanequalto = :<=
@@ -51,7 +48,7 @@ class ApplicationController < ActionController::Base
 		p "Pulling data from database"
 		db = SQLite3::Database.open( "db/development.sqlite3" ) 
 		@tworesult = db.execute( "select * from two_results" )
-		@tworesult.flatten!
+		#@tworesult.flatten!
 		@twocriteria = db.execute ( "select * from two_criteria" )
 		@tworesultcounta = db.execute ( "select count(*) from two_results" )
 		@tworesultcountb = @tworesultcounta.fetch(0)
@@ -61,91 +58,109 @@ class ApplicationController < ActionController::Base
 		@twocriteriacount = @twocriteriacountb[0]
 		p "*************************************************************"
 		p "Starting loop process"
-		until @rescol == 2 do
+		until @resultcount == @tworesultcount do
 			p "*************************************************************"
-			p "This is loop number #{@rescol} of the until @rescol statement" 
-			until @resultcount == @tworesultcount do
+			p "This is loop number #{@resultcount} of the until @resultcount statement" 
+			until @criteriacount == (@twocriteriacount) do
 				p "*************************************************************"
-				p "This is loop number #{@resultcount} of the until @resultcount statement" 
-				until @criteriacount == (@twocriteriacount) do
+				p "This is loop number #{@criteriacount} of the until @criteriacount statement" 
+				until @rescol == 3 do
 					p "*************************************************************"
-					p "This is loop number #{@criteriacount} of the until @criteriacount statement" 
+					p "This is loop number #{@rescol} of the until @rescol statement" 						
 					p "@resultcount is #{@resultcount}"
 					p "@tworesultcount is #{@tworesultcount}"
 					p "@twocriteriacount is #{@twocriteriacount}"
-					p "@alowcricol is #{@alowcricol}"
+					p "(@lowcricol + ((@rescol - 1) * @criflik)) is #{(@lowcricol + ((@rescol - 1) * @criflik))}"
+					p "(@hicricol + ((@rescol - 1) * @criflik)) is #{(@hicricol + ((@rescol - 1) * @criflik))}"
 					p "@twocriteria is #{@twocriteria}"
-					p "@twocriteria[@criteriacount][@alowcricol] is #{@twocriteria[@criteriacount][@alowcricol]}"
 					p "@criteriacount is #{@criteriacount}"
 					p "@rescol is #{@rescol}"
 					p "@tworesult[@resultcount][@rescol] is #{@tworesult[@resultcount][@rescol]}"	
-					p "@twocriteria[@criteriacount][@alowvalcol] is #{@twocriteria[@criteriacount][@alowvalcol]}"
-					p "@tworesult[@resultcount][@rescol] is #{@tworesult[@resultcount][@rescol]}"
-					p "@twocriteria[@criteriacount][@alowvalcol] is #{@twocriteria[@criteriacount][@alowvalcol]}"
+					p "@twocriteria[@criteriacount][(@lowvalcol + ((@rescol - 1) * @criflik))] is #{@twocriteria[@criteriacount][(@lowvalcol + ((@rescol - 1) * @criflik))]}"
+					p "@twocriteria[@criteriacount][(@hivalcol + ((@rescol - 1) * @criflik))] + ((@rescol - 1) * @criflik))] is #{@twocriteria[@criteriacount][(@hivalcol + ((@rescol - 1) * @criflik))]}"
+					p "@twocriteria[@criteriacount][@hicricol + ((@rescol - 1) * @criflik))] is #{@twocriteria[@criteriacount][(@hicricol + ((@rescol - 1) * @criflik))]}"
 					p "At first case check"
-					@aif = @twocriteria[@criteriacount][@alowcricol]
+					@aif = @twocriteria[@criteriacount][(@lowcricol + ((@rescol - 1) * @criflik))]
 					p "@aif is #{@aif}"
 					case @aif
-						when "1"
+						when "1" # ">"
 							@lowcriteria = greaterthan
-						when "2"
+						when "2" # "<"
 							@lowcriteria = lessthan
-						when "3"
+						when "3" # "=>"
 							@lowcriteria = greaterthanequalto
-						when "4"
+						when "4" # "=<"
 							@lowcriteria = lessthanequalto
-						when "5"
+						when "5" # "="
 							@lowcriteria = equalto
-						when ''
+						when '' # " "
 							#TODO
 					end
 					p "@lowcriteria is #{@lowcriteria}"
 					p "At second case check"
-					@bif = @twocriteria[@criteriacount][@ahicricol]
+					@bif = @twocriteria[@criteriacount][(@hicricol + ((@rescol - 1) * @criflik))]
 					p "@bif is #{@bif}"
 					case @bif
-					when "1"
+						when "1" # ">"
 							@hicriteria = greaterthan
-						when "2"
+						when "2" # "<"
 							@hicriteria = lessthan
-						when "3"
+						when "3" # "=>"
 							@hicriteria = greaterthanequalto
-						when "4"
+						when "4" # "=<"
 							@hicriteria = lessthanequalto
-						when "5"
+						when "5" # "="
 							@hicriteria = equalto
-						when "6"
+						when "6" # " "
 							#TODO
 					end
 					p "@hicriteria is #{@hicriteria}"
 					p "At condition check"
-					p "(@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][@alowvalcol])) is #{(@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][@alowvalcol]))}" 
-					if ((@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][@alowvalcol])) && (@tworesult[@resultcount][@ahivalcol].public_send(@hicriteria, @twocriteria[@criteriacount][@ahivalcol])))
-						if @rescol == 1
-							@ares = @tworesults[@resultcount][@rescol]
-						elsif @rescol == 2
-							@bres = @tworesults[@resultcount][@rescol]
+					p "(@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][(@lowvalcol + ((@rescol - 1) * @criflik))]) is #{@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][(@lowvalcol + ((@rescol - 1) * @criflik))])}"
+					p "(@tworesult[@resultcount][@rescol].public_send(@hicriteria, @twocriteria[@criteriacount][(@hivalcol + ((@rescol - 1) * @criflik))]) is #{@tworesult[@resultcount][@rescol].public_send(@hicriteria, @twocriteria[@criteriacount][(@hivalcol + ((@rescol - 1) * @criflik))])}"  
+					if @tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][(@lowvalcol + ((@rescol - 1) * @criflik))])
+						if @tworesult[@resultcount][@rescol].public_send(@hicriteria, @twocriteria[@criteriacount][(@hivalcol + ((@rescol - 1) * @criflik))])
+							p "got here 0"
+							if @rescol == 1
+								p "got here 1"
+								@ares = @tworesult[@resultcount][@rescol]
+								@amet = TRUE
+							elsif @rescol == 2
+								p "got here 2"
+								@bres = @tworesult[@resultcount][@rescol]
+								@bmet = TRUE
+							end
 						end
-					@met = TRUE
 					end
+					p "@amet is #{@amet}"
+					p "@bmet is #{@bmet}"
 					p "@ares is #{@ares}"
 					p "@bres is #{@bres}"
-					p "Adding one to @criteriacount"
-					@criteriacount = @criteriacount + 1
+					p "Adding one to @rescol"
+					@rescol = @rescol+1
 				end
-				p "Adding one to @resultcount"
-			@resultcount = @resultcount+1
-			@criteriacount = 0
+				p "Updating Output database"
+				if @amet = TRUE
+					if @bmet = TRUE
+						@two_output = TwoOutput.new({"O1"=>@ares, "O2"=>@bres})
+						@two_output.save
+						@amet = FALSE
+						@bmet = FALSE
+						@ares = nil
+						@bres = nil
+						p "A record has been added to TwoOutput database"
+					end
+				end
+				p "Adding one to @criteriacount"
+				@criteriacount = @criteriacount + 1
+				@rescol = 1
 			end
-			p "Updating Output database"
-			if @met = TRUE
-				@two_output = TwoOutput.new({"O1"=>@ares, "O2"=>@bres})
-				@two_output.save
-				@met = FALSE
-				p "A record has been added to TwoOutput database"
-			end
-		p "Adding one to @rescol"
-		@rescol = @rescol+1
+		p "Adding one to @resultcount"
+		@resultcount = @resultcount+1
+		@criteriacount = 0
+		@rescol = 1
+		@amet = FALSE
+		@bmet = FALSE
 		end
 	end
 
