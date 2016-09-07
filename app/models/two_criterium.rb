@@ -1,0 +1,2 @@
+class TwoCriterium < ApplicationRecord
+end

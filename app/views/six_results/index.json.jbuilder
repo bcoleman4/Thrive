@@ -1,0 +1,1 @@
+json.array! @six_results, partial: 'six_results/six_result', as: :six_result

@@ -1,0 +1,2 @@
+module TwoOutputsHelper
+end

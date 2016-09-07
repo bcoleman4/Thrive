@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Three Results</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>R1</th>
+      <th>R2</th>
+      <th>R3</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @three_results.each do |three_result| %>
+      <tr>
+        <td><%= three_result.R1 %></td>
+        <td><%= three_result.R2 %></td>
+        <td><%= three_result.R3 %></td>
+        <td><%= link_to 'Show', three_result %></td>
+        <td><%= link_to 'Edit', edit_three_result_path(three_result) %></td>
+        <td><%= link_to 'Destroy', three_result, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Three Result', new_three_result_path %>

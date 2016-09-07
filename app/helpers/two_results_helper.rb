@@ -1,0 +1,2 @@
+module TwoResultsHelper
+end

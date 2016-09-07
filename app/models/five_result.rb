@@ -1,0 +1,2 @@
+class FiveResult < ApplicationRecord
+end

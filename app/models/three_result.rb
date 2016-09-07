@@ -1,0 +1,2 @@
+class ThreeResult < ApplicationRecord
+end

@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Two Outputs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>O1</th>
+      <th>O2</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @two_outputs.each do |two_output| %>
+      <tr>
+        <td><%= two_output.O1 %></td>
+        <td><%= two_output.O2 %></td>
+        <td><%= link_to 'Show', two_output %></td>
+        <td><%= link_to 'Edit', edit_two_output_path(two_output) %></td>
+        <td><%= link_to 'Destroy', two_output, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Two Output', new_two_output_path %>
+<%= link_to 'Find Matching Combinations', '/output2' %>

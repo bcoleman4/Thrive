@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  C1lowervalue: 1.5
+  C1loweroperator: MyString
+  C1uppervalue: 1.5
+  C1upperoperator: MyString
+  C2lowervalue: 1.5
+  C2loweroperator: MyString
+  C2uppervalue: 1.5
+  C2upperoperator: MyString
+
+two:
+  C1lowervalue: 1.5
+  C1loweroperator: MyString
+  C1uppervalue: 1.5
+  C1upperoperator: MyString
+  C2lowervalue: 1.5
+  C2loweroperator: MyString
+  C2uppervalue: 1.5
+  C2upperoperator: MyString

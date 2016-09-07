@@ -1,0 +1,1 @@
+json.array! @five_results, partial: 'five_results/five_result', as: :five_result

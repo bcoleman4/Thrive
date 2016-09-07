@@ -1,0 +1,2 @@
+module FiveResultsHelper
+end

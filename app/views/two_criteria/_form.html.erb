@@ -1,0 +1,57 @@
+<%= form_for(two_criterium) do |f| %>
+  <% if two_criterium.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(two_criterium.errors.count, "error") %> prohibited this two_criterium from being saved:</h2>
+
+      <ul>
+      <% two_criterium.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :C1lowervalue %>
+    <%= f.text_field :C1lowervalue %>
+  </div>
+
+  <div class="field">
+    <%= f.label :C1loweroperator %>
+    <%= f.select :C1loweroperator, [['>',1],['<',2],['=>',3],['=<',4],['=',5],['',6]] %>
+  </div>
+
+  <div class="field">
+    <%= f.label :C1uppervalue %>
+    <%= f.text_field :C1uppervalue %>
+  </div>
+
+  <div class="field">
+    <%= f.label :C1upperoperator %>
+    <%= f.select :C1upperoperator, [['>',1],['<',2],['=>',3],['=<',4],['=',5],['',6]]  %>
+  </div>
+
+  <div class="field">
+    <%= f.label :C2lowervalue %>
+    <%= f.text_field :C2lowervalue %>
+  </div>
+
+  <div class="field">
+    <%= f.label :C2loweroperator %>
+    <%= f.select :C2loweroperator, [['>',1],['<',2],['=>',3],['=<',4],['=',5],['',6]]  %>
+  </div>
+
+  <div class="field">
+    <%= f.label :C2uppervalue %>
+    <%= f.text_field :C2uppervalue %>
+  </div>
+
+  <div class="field">
+    <%= f.label :C2upperoperator %>
+    <%= f.select :C2upperoperator, [['>',1],['<',2],['=>',3],['=<',4],['=',5],['',6]]  %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

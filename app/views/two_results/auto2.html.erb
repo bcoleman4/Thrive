@@ -1,0 +1,26 @@
+<h1>Auto Two Result</h1>
+<table>
+  <thead>
+    <tr>
+      <th>R1</th>
+      <th>R2</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @two_results.each do |two_result| %>
+      <tr>
+        <td><%= two_result.R1 %></td>
+        <td><%= two_result.R2 %></td>
+        <td><%= link_to 'Show', two_result %></td>
+        <td><%= link_to 'Edit', edit_two_result_path(two_result) %></td>
+        <td><%= link_to 'Destroy', two_result, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Back', two_results_path %>

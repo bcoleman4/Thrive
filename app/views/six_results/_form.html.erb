@@ -1,0 +1,47 @@
+<%= form_for(six_result) do |f| %>
+  <% if six_result.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(six_result.errors.count, "error") %> prohibited this six_result from being saved:</h2>
+
+      <ul>
+      <% six_result.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :R1 %>
+    <%= f.number_field :R1 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :R2 %>
+    <%= f.number_field :R2 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :R3 %>
+    <%= f.number_field :R3 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :R4 %>
+    <%= f.number_field :R4 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :R5 %>
+    <%= f.number_field :R5 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :R6 %>
+    <%= f.number_field :R6 %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

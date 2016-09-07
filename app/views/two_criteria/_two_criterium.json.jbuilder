@@ -1,0 +1,2 @@
+json.extract! two_criterium, :id, :C1lowervalue, :C1loweroperator, :C1uppervalue, :C1upperoperator, :C2lowervalue, :C2loweroperator, :C2uppervalue, :C2upperoperator, :created_at, :updated_at
+json.url two_criterium_url(two_criterium, format: :json)

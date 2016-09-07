@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  O1: 1
+  O2: 1
+
+two:
+  O1: 1
+  O2: 1

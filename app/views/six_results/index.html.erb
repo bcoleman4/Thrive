@@ -1,0 +1,38 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Six Results</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>R1</th>
+      <th>R2</th>
+      <th>R3</th>
+      <th>R4</th>
+      <th>R5</th>
+      <th>R6</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @six_results.each do |six_result| %>
+      <tr>
+        <td><%= six_result.R1 %></td>
+        <td><%= six_result.R2 %></td>
+        <td><%= six_result.R3 %></td>
+        <td><%= six_result.R4 %></td>
+        <td><%= six_result.R5 %></td>
+        <td><%= six_result.R6 %></td>
+        <td><%= link_to 'Show', six_result %></td>
+        <td><%= link_to 'Edit', edit_six_result_path(six_result) %></td>
+        <td><%= link_to 'Destroy', six_result, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Six Result', new_six_result_path %>
+<%= link_to 'Auto Creation', '/auto6' %>

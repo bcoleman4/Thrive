@@ -1,0 +1,2 @@
+class TwoOutput < ApplicationRecord
+end

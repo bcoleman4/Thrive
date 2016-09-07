@@ -1,0 +1,1 @@
+json.array! @two_outputs, partial: 'two_outputs/two_output', as: :two_output

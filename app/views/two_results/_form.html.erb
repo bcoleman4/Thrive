@@ -1,0 +1,27 @@
+<%= form_for(two_result) do |f| %>
+  <% if two_result.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(two_result.errors.count, "error") %> prohibited this two_result from being saved:</h2>
+
+      <ul>
+      <% two_result.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :R1 %>
+    <%= f.number_field :R1 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :R2 %>
+    <%= f.number_field :R2 %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,1 @@
+json.partial! "two_results/two_result", two_result: @two_result

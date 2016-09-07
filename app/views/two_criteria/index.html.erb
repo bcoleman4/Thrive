@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Two Criteria</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>C1lowervalue</th>
+      <th>C1loweroperator</th>
+      <th>C1uppervalue</th>
+      <th>C1upperoperator</th>
+      <th>C2lowervalue</th>
+      <th>C2loweroperator</th>
+      <th>C2uppervalue</th>
+      <th>C2upperoperator</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @two_criteria.each do |two_criterium| %>
+      <tr>
+        <td><%= two_criterium.C1lowervalue %></td>
+        <td><%= two_criterium.C1loweroperator %></td>
+        <td><%= two_criterium.C1uppervalue %></td>
+        <td><%= two_criterium.C1upperoperator %></td>
+        <td><%= two_criterium.C2lowervalue %></td>
+        <td><%= two_criterium.C2loweroperator %></td>
+        <td><%= two_criterium.C2uppervalue %></td>
+        <td><%= two_criterium.C2upperoperator %></td>
+        <td><%= link_to 'Show', two_criterium %></td>
+        <td><%= link_to 'Edit', edit_two_criterium_path(two_criterium) %></td>
+        <td><%= link_to 'Destroy', two_criterium, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Two Criterium', new_two_criterium_path %>

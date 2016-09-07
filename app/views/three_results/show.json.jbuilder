@@ -1,0 +1,1 @@
+json.partial! "three_results/three_result", three_result: @three_result
