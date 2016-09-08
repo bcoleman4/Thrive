@@ -1,12 +1,13 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-	def auto2
+	def test
 		delete_table :two_outputs
 		create_table :two_outputs do |t|
-      	t.decimal :O1
-      	t.decimal :O2
-      	t.timestamps
+      		t.decimal :O1
+      		t.decimal :O2
+      		t.timestamps
+		end
 		rake db:migrate
 	end
 
@@ -27,7 +28,7 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
-	def auto2a
+	def auto2
 		@timerstart = Time.new
 		p "*************************************************************"
 		p "Starting function auto2 in application_controller"
