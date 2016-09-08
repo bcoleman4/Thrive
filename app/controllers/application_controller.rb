@@ -1,12 +1,15 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-	def atest
-	  @two_results = TwoResult.all
-
+	def test
+	  @timerstart = Time.new
+	  sleep(4)
+	  @timerend = Time.new
+	  p "The total processing took #{'%.2f' % [@timerend - @timerstart]} seconds"
 	end
 
-	def auto2   
+	def auto2 
+		@timerstart = Time.new
 		p "*************************************************************"
 		p "Starting function auto2 in application_controller"
 		#clear the database records
@@ -20,19 +23,25 @@ class ApplicationController < ActionController::Base
 	  	bRes = 0.0
 	  	until bRes >= 10.0 do
 	    	until aRes >= 10.0 do
-	      	@two_result = TwoResult.new({"R1"=>aRes, "R2"=>bRes})
+	      	@two_result = TwoResult.new({"R1"=>'%.1f' % [aRes], "R2"=>'%.1f' % [bRes]})
 	      	@two_result.save
-	      	p "Written #{aRes} and #{bRes} to database"
+	      	p "Written #{'%.1f' % [aRes]} and #{'%.1f' % [bRes]} to database"
 	      	aRes = aRes +0.1
 	    	end
 	    bRes = bRes +0.1
 	    aRes = 0.0
     	end
+    	db = SQLite3::Database.open( "db/development.sqlite3" ) 
+    	@tworesultcount = db.execute ( "select count(*) from two_results" )
+    	p "#{@tworesultcount} rows written to tworesults database"
+    	@timerend = Timer.new
+    	p "The total processing took #{'%.2f' % [@timerend - @timerstart]} seconds"
 	  	p "*************************************************************"
 	  	p "Finished function to the end"
 	end
 
 	def output2
+		@timerstart = Time.new
 		p "*************************************************************"
 		p " Starting function output2 in application_controller"
 		p "*************************************************************"
@@ -175,342 +184,8 @@ class ApplicationController < ActionController::Base
 		@amet = FALSE
 		@bmet = FALSE
 		end
+		@timerend = Timer.new
+    	p "The total processing took #{'%.2f' % [@timerend - @timerstart]} seconds"
+	  	p "*************************************************************"
+	  	p "Finished function to the end"
 	end
-
-	def output2b
-	#I think this code is going to have to live in the application controller
-	#@two_outputs = TwoOutput.all
-	#@two_results = TwoResult.all
-	#@two_result = TwoResult.new
-
-		@R1met = FALSE
-		@R2met = FALSE
-		TwoOutput.destroy_all
-		
-		db = SQLite3::Database.open( "db/development.sqlite3" ) 
-    	@two_results_R1 = db.execute( "select R1 from two_results" )
-    	@two_results_R2 = db.execute( "select R2 from two_results" )
-		@two_criteria_C1loweroperator = db.execute( "select C1loweroperator from two_criteria" )
-		@two_criteria_C1upperoperator = db.execute( "select C1upperoperator from two_criteria" )
-		@two_criteria_C1lowervalue = db.execute( "select C1lowervalue from two_criteria" )
-		@two_criteria_C1uppervalue = db.execute( "select C1uppervalue from two_criteria" )
-		@two_criteria_C2loweroperator = db.execute( "select C2loweroperator from two_criteria" )
-		@two_criteria_C2upperoperator = db.execute( "select C2upperoperator from two_criteria" )
-		@two_criteria_C2lowervalue = db.execute( "select C2lowervalue from two_criteria" )
-		@two_criteria_C2uppervalue = db.execute( "select C2uppervalue from two_criteria" )
-
-		@two_criteria_C1loweroperator.flatten!
-		@two_criteria_C1upperoperator.flatten!
-		@two_criteria_C2loweroperator.flatten!
-		@two_criteria_C2upperoperator.flatten!
-		@two_results_R1.each do |a| 
-			#puts @two_results_R1
-			#puts @two_results_R2
-			#puts @two_criteria_C1loweroperator
-			@two_criteria_C1loweroperator.each do |b| 
-				print @two_criteria_C1loweroperator[0]
-				#print ("I'm the upper operator for criteria 1 " << @two_criteria_C1upperoperator)
-				#print ("I'm the lower operator for criteria 2 " << @two_criteria_C2loweroperator)
-				#print ("I'm the upper operator for criteria 2 " << @two_criteria_C2upperoperator)
-				#print "I've worked"
-				case @two_criteria_C1loweroperator[0]
-				when '>'
-					case @two_criteria_C1upperoperator[0]
-					when '>'
-						if ((@two_results_R1[0] > @two_criteria_C1lowervalue) && (@two_results_R1 > @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '<'
-						if ((@two_results_R1[0] > @two_criteria_C1lowervalue) && (@two_results_R1 < @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end	
-					when '=>'
-						if ((@two_results_R1[0] > @two_criteria_C1lowervalue) && (@two_results_R1 >= @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '=<'
-						if ((@two_results_R1 > @two_criteria_C1lowervalue) && (@two_results_R1 <= @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '='
-						if ((@two_results_R1 > @two_criteria_C1lowervalue) && (@two_results_R1 == @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when ''
-						if (@two_results_R1 > @two_criteria_C1lowervalue)
-							@R1met = TRUE
-						end
-					end
-				when '<'
-					case @two_criteria_C1upperoperator[0]
-					when '>'
-						if ((@two_results_R1 < @two_criteria_C1lowervalue) && (@two_results_R1 > @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '<'
-						if ((@two_results_R1 < @two_criteria_C1lowervalue) && (@two_results_R1 < @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end	
-					when '=>'
-						if ((@two_results_R1 < @two_criteria_C1lowervalue) && (@two_results_R1 >= @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '=<'
-						if ((@two_results_R1 < @two_criteria_C1lowervalue) && (@two_results_R1 <= @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '='
-						if ((@two_results_R1 < @two_criteria_C1lowervalue) && (@two_results_R1 == @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when ''
-						if (@two_results_R1 < @two_criteria_C1lowervalue)
-							@R1met = TRUE
-						end
-					end
-				when '=>'
-					case @two_criteria_C1upperoperator[0]
-					when '>'
-						if ((@two_results_R1 >= @two_criteria_C1lowervalue) && (@two_results_R1 > @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '<'
-						if ((@two_results_R1 >= @two_criteria_C1lowervalue) && (@two_results_R1 < @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '=>'
-						if ((@two_results_R1 >= @two_criteria_C1lowervalue) && (@two_results_R1 >= @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end	
-					when '=<'
-						if ((@two_results_R1 >= @two_criteria_C1lowervalue) && (@two_results_R1 <= @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '='
-						if ((@two_results_R1 >= @two_criteria_C1lowervalue) && (@two_results_R1 == @two_criteria_C1uppervalue))
-							@R1met = TRUE		
-						end
-					when ''
-						if (@two_results_R1 >= @two_criteria_C1lowervalue)
-							@R1met = TRUE
-						end
-					end
-				when '=<'
-					case @two_criteria_C1upperoperator[0]
-					when '>'
-						if ((@two_results_R1 <= @two_criteria_C1lowervalue) && (@two_results_R1 > @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '<'
-						if ((@two_results_R1 <= @two_criteria_C1lowervalue) && (@two_results_R1 < @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '=>'
-						if ((@two_results_R1 <= @two_criteria_C1lowervalue) && (@two_results_R1 >= @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '=<'
-						if ((@two_results_R1 <= @two_criteria_C1lowervalue) && (@two_results_R1 <= @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '='
-						if ((@two_results_R1 <= @two_criteria_C1lowervalue) && (@two_results_R1 == @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when ''
-						if (@two_results_R1 <= @two_criteria_C1lowervalue)
-							@R1met = TRUE
-						end
-					end
-				when '='
-					puts "made it to first case"
-					case @two_criteria_C1upperoperator[0]
-					when '>'
-						if ((@two_results_R1 == @two_criteria_C1lowervalue) && (@two_results_R1 > @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '<'
-						if ((@two_results_R1 == @two_criteria_C1lowervalue) && (@two_results_R1 < @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '=>'
-						if ((@two_results_R1 == @two_criteria_C1lowervalue) && (@two_results_R1 >= @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '=<'
-						if ((@two_results_R1 == @two_criteria_C1lowervalue) && (@two_results_R1 <= @two_criteria_C1uppervalue))
-							@R1met = TRUE
-						end
-					when '='
-						puts "made it to second case"
-						puts @two_results_R1[0]
-						puts @two_criteria_C1lowervalue
-						puts @two_criteria_C1uppervalue
-						if ((@two_results_R1[0] == @two_criteria_C1lowervalue[0]) && (@two_results_R1[0] == @two_criteria_C1uppervalue[0]))
-							puts "made it to set variable"
-							@R1met = TRUE
-						end
-					when ''
-						if (@two_results_R1 == @two_criteria_C1lowervalue)
-							@R1met = TRUE
-						end
-					end
-				end
-				puts @two_criteria_C2upperoperator[0]	
-				case @two_criteria_C2loweroperator[0]
-				when '>'
-					case @two_criteria_C2upperoperator[0]
-					when '>'
-						if ((@two_results_R2 > @two_criteria_C2lowervalue) && (@two_results_R1 > @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '<'
-						if ((@two_results_R2 > @two_criteria_C2lowervalue) && (@two_results_R1 < @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end	
-					when '=>'
-						if ((@two_results_R2 > @two_criteria_C2lowervalue) && (@two_results_R1 >= @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '=<'
-						if ((@two_results_R2 > @two_criteria_C2lowervalue) && (@two_results_R1 <= @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '='
-						if ((@two_results_R2 > @two_criteria_C2lowervalue) && (@two_results_R1 == @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when ''
-						if (@two_results_R2 > @two_criteria_C2lowervalue)
-							@R2met = TRUE
-						end
-					end
-				when '<'
-					case @two_criteria_C2upperoperator[1]
-					when '>'
-						if ((@two_results_R2 < @two_criteria_C2lowervalue) && (@two_results_R1 > @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '<'
-						if ((@two_results_R2 < @two_criteria_C2lowervalue) && (@two_results_R1 < @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '=>'
-						if ((@two_results_R2 < @two_criteria_C2lowervalue) && (@two_results_R1 >= @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '=<'
-						if ((@two_results_R2 < @two_criteria_C2lowervalue) && (@two_results_R1 <= @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '='
-						if ((@two_results_R2 < @two_criteria_C2lowervalue) && (@two_results_R1 == @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when ''
-						if (@two_results_R2 < @two_criteria_C2lowervalue)
-							@R2met = TRUE
-						end
-					end
-				when '=>'
-					case @two_criteria_C2upperoperator[1]
-					when '>'
-						if ((@two_results_R2 >= @two_criteria_C2lowervalue) && (@two_results_R1 > @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '<'
-						if ((@two_results_R2 >= @two_criteria_C2lowervalue) && (@two_results_R1 < @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '=>'
-						if ((@two_results_R2 >= @two_criteria_C2lowervalue) && (@two_results_R1 >= @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '=<'
-						if ((@two_results_R2 >= @two_criteria_C2lowervalue) && (@two_results_R1 <= @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '='
-						if ((@two_results_R2 >= @two_criteria_C2lowervalue) && (@two_results_R1 == @two_criteria_C2uppervalue))
-							@R2met = TRUE		
-						end
-					when ''
-						if (@two_results_R2 >= @two_criteria_C2lowervalue)
-							@R2met = TRUE
-						end
-					end
-				when '=<'
-					case @two_criteria_C2upperoperator[1]
-					when '>'
-						if ((@two_results_R2 <= @two_criteria_C2lowervalue) && (@two_results_R1 > @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '<'
-						if ((@two_results_R2 <= @two_criteria_C2lowervalue) && (@two_results_R1 < @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '=>'
-						if ((@two_results_R2 <= @two_criteria_C2lowervalue) && (@two_results_R1 >= @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '=<'
-						if ((@two_results_R2 <= @two_criteria_C2lowervalue) && (@two_results_R1 <= @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '='
-						if ((@two_results_R2 <= @two_criteria_C2lowervalue) && (@two_results_R1 == @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when ''
-						if (@two_results_R2 <= @two_criteria_C2lowervalue)
-							@R2met = TRUE
-						end
-					end
-				when '='
-					case @two_criteria_C2upperoperator[0]
-					when '>'
-						if ((@two_results_R2 == @two_criteria_C2lowervalue) && (@two_results_R1 > @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '<'
-						if ((@two_results_R2 == @two_criteria_C2lowervalue) && (@two_results_R1 < @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '=>'
-						if ((@two_results_R2 == @two_criteria_C2lowervalue) && (@two_results_R1 >= @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '=<'
-						if ((@two_results_R2 == @two_criteria_C2lowervalue) && (@two_results_R1 <= @two_criteria_C2uppervalue))
-							@R2met = TRUE
-						end
-					when '='
-						puts "Made it to last case"
-						puts @two_criteria_C2uppervalue[1]	
-						puts @two_results_R2[0]
-						puts @two_criteria_C2lowervalue[1]
-						if ((@two_results_R2[0] == @two_criteria_C2lowervalue[1]) && (@two_results_R2[0] == @two_criteria_C2uppervalue[1]))
-							@R2met = TRUE
-						end
-					when ''
-						if (@two_results_R2 == @two_criteria_C2lowervalue)
-							@R2met = TRUE
-						end
-					end
-				end
-				p @R1met
-				p @R2met
-				if (@R1met && @R2met) == TRUE
-					@two_output = TwoOutput.new({"R1"=>@two_results_R1, "R2"=>@two_results_R2})
-					@two_output.save
-				end
-			end
-		end
-	end
-	#pseudocode
-	#for all results
-	  #for all criteria
-	    #if (R1 C1LC AND R1 C1UC) AND (R2 C2LC AND R2 C2UC) == TRUE write to output database 
-	#show two_output.all
-
-end
