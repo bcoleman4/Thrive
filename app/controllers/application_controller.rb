@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
     	db = SQLite3::Database.open( "db/development.sqlite3" ) 
     	@tworesultcount = db.execute ( "select count(*) from two_results" )
     	p "#{@tworesultcount} rows written to tworesults database"
-    	@timerend = Timer.new
+    	@timerend = Time.new
     	p "The total processing took #{'%.2f' % [@timerend - @timerstart]} seconds"
 	  	p "*************************************************************"
 	  	p "Finished function to the end"
