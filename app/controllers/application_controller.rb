@@ -7,16 +7,28 @@ class ApplicationController < ActionController::Base
 	end
 
 	def auto2   
+	  p "*************************************************************"
+	  p "Starting function auto2 in application_controller"
 	  #clear the database records
+	  p "*************************************************************"
+	  p "Deleting all records from TwoResult database"
 	  TwoResult.destroy_all
-
+	  p "*************************************************************"
+	  p "Starting loop procedure"
 	  #create all of the combinations and insert into database
-	  for bRes in 1..10
-	    for aRes in 1..10
+	  aRes = 0.0
+	  bRes = 0.0
+	  loop until bRes == 10.0
+	    loop until aRes == 10.0
 	      @two_result = TwoResult.new({"R1"=>aRes, "R2"=>bRes})
 	      @two_result.save
+	      p "Written #{aRes} and #{bRes} to database"
+	      aRes = aRes +0.1
+	      bRes = bRes +0.1
 	    end
 	  end
+	  p "*************************************************************"
+	  p "Finished function to the end"
 	end
 
 	def output2
