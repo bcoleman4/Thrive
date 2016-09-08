@@ -31,6 +31,7 @@ class ApplicationController < ActionController::Base
 	    bRes = bRes +0.1
 	    aRes = 0.0
     	end
+    	#Counting the rows written to database
     	db = SQLite3::Database.open( "db/development.sqlite3" ) 
     	@tworesultcount = db.execute ( "select count(*) from two_results" )
     	p "#{@tworesultcount} rows written to tworesults database"
@@ -189,3 +190,4 @@ class ApplicationController < ActionController::Base
 	  	p "*************************************************************"
 	  	p "Finished function to the end"
 	end
+end
