@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160907092752) do
+ActiveRecord::Schema.define(version: 20160908134858) do
 
   create_table "five_results", force: :cascade do |t|
     t.integer  "R1"
@@ -64,8 +64,8 @@ ActiveRecord::Schema.define(version: 20160907092752) do
   end
 
   create_table "two_outputs", force: :cascade do |t|
-    t.integer  "O1"
-    t.integer  "O2"
+    t.decimal  "O1"
+    t.decimal  "O2"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

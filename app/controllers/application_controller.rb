@@ -1,14 +1,33 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-	def test
-	  @timerstart = Time.new
-	  sleep(4)
-	  @timerend = Time.new
-	  p "The total processing took #{'%.2f' % [@timerend - @timerstart]} seconds"
+	def auto2
+		delete_table :two_outputs
+		create_table :two_outputs do |t|
+      	t.decimal :O1
+      	t.decimal :O2
+      	t.timestamps
+		rake db:migrate
 	end
 
-	def auto2 
+	def testb
+	  	@timerstart = Time.new
+	  	sleep(166)
+	  	@timerend = Time.new
+	  	@duration = (@timerend - @timerstart) 
+	  	@mins = (@duration / 60)
+	  	@secs = (@duration % 60)
+	  	case 
+	  		when @mins < 1
+	  			p "The total processing took #{'%.2f' % [@duration]} seconds"
+	  		when @mins < 2
+	  			p "The total processing took #{'%.0f' % [@mins]} min and #{'%.2f' % [@secs]} seconds"
+			when @mins >= 2
+				p "The total processing took #{'%.0f' % [@mins]} mins and #{'%.2f' % [@secs]} seconds"
+		end
+	end
+
+	def auto2a
 		@timerstart = Time.new
 		p "*************************************************************"
 		p "Starting function auto2 in application_controller"
@@ -35,8 +54,18 @@ class ApplicationController < ActionController::Base
     	db = SQLite3::Database.open( "db/development.sqlite3" ) 
     	@tworesultcount = db.execute ( "select count(*) from two_results" )
     	p "#{@tworesultcount} rows written to tworesults database"
-    	@timerend = Time.new
-    	p "The total processing took #{'%.2f' % [@timerend - @timerstart]} seconds"
+	  	@timerend = Time.new
+	  	@duration = (@timerend - @timerstart) 
+	  	@mins = (@duration / 60)
+	  	@secs = (@duration % 60)
+	  	case 
+	  		when @mins < 1
+	  			p "The total processing took #{'%.2f' % [@duration]} seconds"
+	  		when @mins < 2
+	  			p "The total processing took #{'%.0f' % [@mins]} min and #{'%.2f' % [@secs]} seconds"
+			when @mins >= 2
+				p "The total processing took #{'%.0f' % [@mins]} mins and #{'%.2f' % [@secs]} seconds"
+		end
 	  	p "*************************************************************"
 	  	p "Finished function to the end"
 	end
@@ -162,10 +191,10 @@ class ApplicationController < ActionController::Base
 					p "Adding one to @rescol"
 					@rescol = @rescol+1
 				end
-				p "Updating Output database"
-				if @amet = TRUE
-					if @bmet = TRUE
-						@two_output = TwoOutput.new({"O1"=>@ares, "O2"=>@bres})
+				p "Checking whether to update Output database"
+				if @amet == TRUE
+					if @bmet == TRUE
+						@two_output = TwoOutput.new({"O1"=>'%.2f' % [@ares], "O2"=>'%.2f' % [@bres]})
 						@two_output.save
 						@amet = FALSE
 						@bmet = FALSE
@@ -185,8 +214,18 @@ class ApplicationController < ActionController::Base
 		@amet = FALSE
 		@bmet = FALSE
 		end
-		@timerend = Timer.new
-    	p "The total processing took #{'%.2f' % [@timerend - @timerstart]} seconds"
+	  	@timerend = Time.new
+	  	@duration = (@timerend - @timerstart) 
+	  	@mins = (@duration / 60)
+	  	@secs = (@duration % 60)
+	  	case 
+	  		when @mins < 1
+	  			p "The total processing took #{'%.2f' % [@duration]} seconds"
+	  		when @mins < 2
+	  			p "The total processing took #{'%.0f' % [@mins]} min and #{'%.2f' % [@secs]} seconds"
+			when @mins >= 2
+				p "The total processing took #{'%.0f' % [@mins]} mins and #{'%.2f' % [@secs]} seconds"
+		end
 	  	p "*************************************************************"
 	  	p "Finished function to the end"
 	end
