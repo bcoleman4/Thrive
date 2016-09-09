@@ -30,14 +30,15 @@ class ApplicationController < ActionController::Base
 
 	def auto2
 		@timerstart = Time.new
-		p "*************************************************************"
-		p "Starting function auto2 in application_controller"
+		logger.info "*************************************************************"
+		logger.info "Starting function auto2 in application_controller"
+		logger.info "start time of #{@timerstart}"
 		#clear the database records
-		p "*************************************************************"
-		p "Deleting all records from TwoResult database"
+		logger.info "*************************************************************"
+		logger.info "Deleting all records from TwoResult database"
 		TwoResult.destroy_all
-		p "*************************************************************"
-		p "Starting loop procedure"
+		logger.info "*************************************************************"
+		logger.info "Starting loop procedure"
 		#create all of the combinations and insert into database
 		aRes = 0.0
 	  	bRes = 0.0
@@ -45,7 +46,7 @@ class ApplicationController < ActionController::Base
 	    	until aRes >= 10.0 do
 	      	@two_result = TwoResult.new({"R1"=>'%.1f' % [aRes], "R2"=>'%.1f' % [bRes]})
 	      	@two_result.save
-	      	p "Written #{'%.1f' % [aRes]} and #{'%.1f' % [bRes]} to database"
+	      	logger.info "Written #{'%.1f' % [aRes]} and #{'%.1f' % [bRes]} to database"
 	      	aRes = aRes +0.1
 	    	end
 	    bRes = bRes +0.1
@@ -54,34 +55,35 @@ class ApplicationController < ActionController::Base
     	#Counting the rows written to database
     	db = SQLite3::Database.open( "db/development.sqlite3" ) 
     	@tworesultcount = db.execute ( "select count(*) from two_results" )
-    	p "#{@tworesultcount} rows written to tworesults database"
+    	logger.info "#{@tworesultcount} rows written to tworesults database"
 	  	@timerend = Time.new
 	  	@duration = (@timerend - @timerstart) 
 	  	@mins = (@duration / 60)
 	  	@secs = (@duration % 60)
 	  	case 
 	  		when @mins < 1
-	  			p "The total processing took #{'%.2f' % [@duration]} seconds"
+	  			logger.info "The total processing took #{'%.2f' % [@duration]} seconds"
 	  		when @mins < 2
-	  			p "The total processing took #{'%.0f' % [@mins]} min and #{'%.2f' % [@secs]} seconds"
+	  			logger.info "The total processing took #{'%.0f' % [@mins]} min and #{'%.2f' % [@secs]} seconds"
 			when @mins >= 2
-				p "The total processing took #{'%.0f' % [@mins]} mins and #{'%.2f' % [@secs]} seconds"
+				logger.info "The total processing took #{'%.0f' % [@mins]} mins and #{'%.2f' % [@secs]} seconds"
 		end
-	  	p "*************************************************************"
-	  	p "Finished function to the end"
+		logger.info "*************************************************************"
+	  	logger.info "Finished function to the end"
 	end
 
 	def output2
 		@timerstart = Time.new
-		p "*************************************************************"
-		p " Starting function output2 in application_controller"
-		p "*************************************************************"
-		p "Deleting all records from TwoOutput database"
+		logger.info "start time of #{@timerstart}"
+		logger.info "*************************************************************"
+		logger.info " Starting function output2 in application_controller"
+		logger.info "*************************************************************"
+		logger.info "Deleting all records from TwoOutput database"
 		@amet = FALSE
 		@bmet = FALSE
 		TwoOutput.destroy_all
-		p "*************************************************************"
-		p "Setting variables"
+		logger.info "*************************************************************"
+		logger.info "Setting variables"
 		@resultcount = 0
 		@criteriacount = 0
 		@arow = 0
@@ -97,8 +99,8 @@ class ApplicationController < ActionController::Base
 		greaterthanequalto = :>=
 		equalto = :==
 		nothing = :''
-		p "*************************************************************"
-		p "Pulling data from database"
+		logger.info "*************************************************************"
+		logger.info "Pulling data from database"
 		db = SQLite3::Database.open( "db/development.sqlite3" ) 
 		@tworesult = db.execute( "select * from two_results" )
 		#@tworesult.flatten!
@@ -109,106 +111,110 @@ class ApplicationController < ActionController::Base
 		@twocriteriacounta = db.execute ( "select count(*) from two_criteria" )
 		@twocriteriacountb = @twocriteriacounta.flatten!
 		@twocriteriacount = @twocriteriacountb[0]
-		p "*************************************************************"
-		p "Starting loop process"
+		logger.info "*************************************************************"
+		logger.info "Starting loop process"
 		until @resultcount == @tworesultcount do
-			p "*************************************************************"
-			p "This is loop number #{@resultcount} of the until @resultcount statement" 
+			logger.info "*************************************************************"
+			logger.info "This is loop number #{@resultcount} of the until @resultcount statement" 
 			until @criteriacount == (@twocriteriacount) do
-				p "*************************************************************"
-				p "This is loop number #{@criteriacount} of the until @criteriacount statement" 
+				logger.info "*************************************************************"
+				logger.info "This is loop number #{@criteriacount} of the until @criteriacount statement" 
 				until @rescol == 3 do
-					p "*************************************************************"
-					p "This is loop number #{@rescol} of the until @rescol statement" 						
-					p "@resultcount is #{@resultcount}"
-					p "@tworesultcount is #{@tworesultcount}"
-					p "@twocriteriacount is #{@twocriteriacount}"
-					p "(@lowcricol + ((@rescol - 1) * @criflik)) is #{(@lowcricol + ((@rescol - 1) * @criflik))}"
-					p "(@hicricol + ((@rescol - 1) * @criflik)) is #{(@hicricol + ((@rescol - 1) * @criflik))}"
-					p "@twocriteria is #{@twocriteria}"
-					p "@criteriacount is #{@criteriacount}"
-					p "@rescol is #{@rescol}"
-					p "@tworesult[@resultcount][@rescol] is #{@tworesult[@resultcount][@rescol]}"	
-					p "@twocriteria[@criteriacount][(@lowvalcol + ((@rescol - 1) * @criflik))] is #{@twocriteria[@criteriacount][(@lowvalcol + ((@rescol - 1) * @criflik))]}"
-					p "@twocriteria[@criteriacount][(@hivalcol + ((@rescol - 1) * @criflik))] + ((@rescol - 1) * @criflik))] is #{@twocriteria[@criteriacount][(@hivalcol + ((@rescol - 1) * @criflik))]}"
-					p "@twocriteria[@criteriacount][@hicricol + ((@rescol - 1) * @criflik))] is #{@twocriteria[@criteriacount][(@hicricol + ((@rescol - 1) * @criflik))]}"
-					p "At first case check"
+					logger.info "*************************************************************"
+					logger.info "This is loop number #{@rescol} of the until @rescol statement" 						
+					logger.info "@resultcount is #{@resultcount}"
+					logger.info "@tworesultcount is #{@tworesultcount}"
+					logger.info "@twocriteriacount is #{@twocriteriacount}"
+					logger.info "(@lowcricol + ((@rescol - 1) * @criflik)) is #{(@lowcricol + ((@rescol - 1) * @criflik))}"
+					logger.info "(@hicricol + ((@rescol - 1) * @criflik)) is #{(@hicricol + ((@rescol - 1) * @criflik))}"
+					logger.info "@twocriteria is #{@twocriteria}"
+					logger.info "@criteriacount is #{@criteriacount}"
+					logger.info "@rescol is #{@rescol}"
+					logger.info "@tworesult[@resultcount][@rescol] is #{@tworesult[@resultcount][@rescol]}"	
+					logger.info "@twocriteria[@criteriacount][(@lowvalcol + ((@rescol - 1) * @criflik))] is #{@twocriteria[@criteriacount][(@lowvalcol + ((@rescol - 1) * @criflik))]}"
+					logger.info "@twocriteria[@criteriacount][(@hivalcol + ((@rescol - 1) * @criflik))] + ((@rescol - 1) * @criflik))] is #{@twocriteria[@criteriacount][(@hivalcol + ((@rescol - 1) * @criflik))]}"
+					logger.info "@twocriteria[@criteriacount][@hicricol + ((@rescol - 1) * @criflik))] is #{@twocriteria[@criteriacount][(@hicricol + ((@rescol - 1) * @criflik))]}"
+					logger.info "At first case check"
 					@aif = @twocriteria[@criteriacount][(@lowcricol + ((@rescol - 1) * @criflik))]
-					p "@aif is #{@aif}"
+					logger.info "@aif is #{@aif}"
 					case @aif
-						when "1" # ">"
+						when ">" # ">"
 							@lowcriteria = greaterthan
-						when "2" # "<"
+						when "<" # "<"
 							@lowcriteria = lessthan
-						when "3" # "=>"
+						when ">=" # "=>"
 							@lowcriteria = greaterthanequalto
-						when "4" # "=<"
+						when "<=" # "=<"
 							@lowcriteria = lessthanequalto
-						when "5" # "="
+						when "==" # "="
 							@lowcriteria = equalto
-						when '' # " "
+						when "" # " "
 							#TODO
 					end
-					p "@lowcriteria is #{@lowcriteria}"
-					p "At second case check"
+					logger.info "@lowcriteria is #{@lowcriteria}"
+					logger.info "At second case check"
 					@bif = @twocriteria[@criteriacount][(@hicricol + ((@rescol - 1) * @criflik))]
-					p "@bif is #{@bif}"
+					logger.info "@bif is #{@bif}"
 					case @bif
-						when "1" # ">"
+						when ">" # ">"
 							@hicriteria = greaterthan
-						when "2" # "<"
+						when "<" # "<"
 							@hicriteria = lessthan
-						when "3" # "=>"
+						when ">=" # "=>"
 							@hicriteria = greaterthanequalto
-						when "4" # "=<"
+						when "<=" # "=<"
 							@hicriteria = lessthanequalto
-						when "5" # "="
+						when "==" # "="
 							@hicriteria = equalto
-						when "6" # " "
+						when "" # " "
 							#TODO
 					end
-					p "@hicriteria is #{@hicriteria}"
-					p "At condition check"
-					p "(@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][(@lowvalcol + ((@rescol - 1) * @criflik))]) is #{@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][(@lowvalcol + ((@rescol - 1) * @criflik))])}"
-					p "(@tworesult[@resultcount][@rescol].public_send(@hicriteria, @twocriteria[@criteriacount][(@hivalcol + ((@rescol - 1) * @criflik))]) is #{@tworesult[@resultcount][@rescol].public_send(@hicriteria, @twocriteria[@criteriacount][(@hivalcol + ((@rescol - 1) * @criflik))])}"  
+					logger.info "@hicriteria is #{@hicriteria}"
+					logger.info "At condition check"
+					logger.info "(@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][(@lowvalcol + ((@rescol - 1) * @criflik))]) is #{@tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][(@lowvalcol + ((@rescol - 1) * @criflik))])}"
+					logger.info "(@tworesult[@resultcount][@rescol].public_send(@hicriteria, @twocriteria[@criteriacount][(@hivalcol + ((@rescol - 1) * @criflik))]) is #{@tworesult[@resultcount][@rescol].public_send(@hicriteria, @twocriteria[@criteriacount][(@hivalcol + ((@rescol - 1) * @criflik))])}"  
 					if @tworesult[@resultcount][@rescol].public_send(@lowcriteria, @twocriteria[@criteriacount][(@lowvalcol + ((@rescol - 1) * @criflik))])
 						if @tworesult[@resultcount][@rescol].public_send(@hicriteria, @twocriteria[@criteriacount][(@hivalcol + ((@rescol - 1) * @criflik))])
-							p "got here 0"
+							logger.info "got here 0"
 							if @rescol == 1
-								p "got here 1"
+								logger.info "got here 1"
 								@ares = @tworesult[@resultcount][@rescol]
 								@amet = TRUE
 							elsif @rescol == 2
-								p "got here 2"
+								logger.info "got here 2"
 								@bres = @tworesult[@resultcount][@rescol]
 								@bmet = TRUE
 							end
 						end
 					end
-					p "@amet is #{@amet}"
-					p "@bmet is #{@bmet}"
-					p "@ares is #{@ares}"
-					p "@bres is #{@bres}"
-					p "Adding one to @rescol"
+					logger.info "@amet is #{@amet} and @bmet is #{@bmet}"
+					logger.info "@ares is #{@ares} and @bres is #{@bres}"
+					logger.info "Adding one to @rescol"
 					@rescol = @rescol+1
 				end
-				p "Checking whether to update Output database"
-				if @amet == TRUE
-					if @bmet == TRUE
-						@two_output = TwoOutput.new({"O1"=>'%.2f' % [@ares], "O2"=>'%.2f' % [@bres]})
-						@two_output.save
-						@amet = FALSE
-						@bmet = FALSE
-						@ares = nil
-						@bres = nil
-						p "A record has been added to TwoOutput database"
+				logger.info "Checking whether to update Output database"
+				if @ares != nil
+					if @bres != nil
+						if @amet == TRUE
+							if @bmet == TRUE
+								@two_output = TwoOutput.new({"O1"=>'%.2f' % [@ares], "O2"=>'%.2f' % [@bres]})
+								@two_output.save
+								@amet = FALSE
+								@bmet = FALSE
+								@ares = nil
+								@bres = nil
+								logger.info "A record has been added to TwoOutput database"
+							end
+						end
 					end
 				end
-				p "Adding one to @criteriacount"
+				logger.info "Adding one to @criteriacount"
 				@criteriacount = @criteriacount + 1
 				@rescol = 1
+				@ares = nil
+				@bres = nil
 			end
-		p "Adding one to @resultcount"
+		logger.info "Adding one to @resultcount"
 		@resultcount = @resultcount+1
 		@criteriacount = 0
 		@rescol = 1
@@ -221,13 +227,13 @@ class ApplicationController < ActionController::Base
 	  	@secs = (@duration % 60)
 	  	case 
 	  		when @mins < 1
-	  			p "The total processing took #{'%.2f' % [@duration]} seconds"
+	  			logger.info "The total processing took #{'%.2f' % [@duration]} seconds"
 	  		when @mins < 2
-	  			p "The total processing took #{'%.0f' % [@mins]} min and #{'%.2f' % [@secs]} seconds"
+	  			logger.info "The total processing took #{'%.0f' % [@mins]} min and #{'%.2f' % [@secs]} seconds"
 			when @mins >= 2
-				p "The total processing took #{'%.0f' % [@mins]} mins and #{'%.2f' % [@secs]} seconds"
+				logger.info "The total processing took #{'%.0f' % [@mins]} mins and #{'%.2f' % [@secs]} seconds"
 		end
-	  	p "*************************************************************"
-	  	p "Finished function to the end"
+	  	logger.info "*************************************************************"
+	  	logger.info "Finished function to the end"
 	end
 end

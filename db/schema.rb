@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160908134858) do
+ActiveRecord::Schema.define(version: 20160909081142) do
 
   create_table "five_results", force: :cascade do |t|
     t.integer  "R1"
@@ -51,11 +51,11 @@ ActiveRecord::Schema.define(version: 20160908134858) do
   end
 
   create_table "two_criteria", force: :cascade do |t|
-    t.integer  "C1lowervalue"
+    t.decimal  "C1lowervalue"
     t.string   "C1loweroperator"
-    t.integer  "C1uppervalue"
+    t.decimal  "C1uppervalue"
     t.string   "C1upperoperator"
-    t.integer  "C2lowervalue"
+    t.decimal  "C2lowervalue"
     t.string   "C2loweroperator"
     t.decimal  "C2uppervalue"
     t.string   "C2upperoperator"
