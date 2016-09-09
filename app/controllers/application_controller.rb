@@ -11,6 +11,10 @@ class ApplicationController < ActionController::Base
 		rake db:migrate
 	end
 
+	def create_master_databse
+
+	end
+
 	def testb
 	  	@timerstart = Time.new
 	  	sleep(166)
@@ -28,7 +32,7 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
-	def auto2
+	def create_master_database
 		@timerstart = Time.new
 		logger.info "*************************************************************"
 		logger.info "Starting function auto2 in application_controller"
@@ -42,16 +46,46 @@ class ApplicationController < ActionController::Base
 		#create all of the combinations and insert into database
 		aRes = 0.0
 	  	bRes = 0.0
-	  	until bRes >= 10.0 do
-	    	until aRes >= 10.0 do
-	      	@two_result = TwoResult.new({"R1"=>'%.1f' % [aRes], "R2"=>'%.1f' % [bRes]})
-	      	@two_result.save
-	      	logger.info "Written #{'%.1f' % [aRes]} and #{'%.1f' % [bRes]} to database"
-	      	aRes = aRes +0.1
+	  	cRes = 0.0
+	  	dRes = 0.0
+	  	eRes = 0.0
+	  	fRes = 0.0
+	  	until fRes >= 10.0 do
+		  	until eRes >= 10.0 do
+			  	until dRes >= 10.0 do
+				  	until cRes >= 10.0 do
+					  	until bRes >= 10.0 do
+					    	until aRes >= 10.0 do
+					      	@two_result = TwoResult.new({"R1"=>'%.1f' % [aRes], "R2"=>'%.1f' % [bRes]})
+					      	@two_result.save
+					      	logger.info "Written #{'%.1f' % [aRes]} and #{'%.1f' % [bRes]} to database"
+					      	aRes = aRes +0.1
+					    	end
+						bRes = bRes +0.1
+	    				aRes = 0.0		    	
+				    	end
+			    	cres = cRes +0.1
+			    	bRes = 0.0
+	    			aRes = 0.0
+			    	end
+			    dres = dres +0.1
+		    	cres = 0.0
+		    	bRes = 0.0
+    			aRes = 0.0
+		    	end
+		    	eres = eres +0.1
+		    	dres = 0.0
+		    	cres = 0.0
+		    	bRes = 0.0
+    			aRes = 0.0
 	    	end
-	    bRes = bRes +0.1
-	    aRes = 0.0
-    	end
+	 	   	fres = fres +0.1
+	    	eres = 0.0
+	    	dres = 0.0
+	    	cres = 0.0
+	    	bRes = 0.0
+			aRes = 0.0
+		end
     	#Counting the rows written to database
     	db = SQLite3::Database.open( "db/development.sqlite3" ) 
     	@tworesultcount = db.execute ( "select count(*) from two_results" )
