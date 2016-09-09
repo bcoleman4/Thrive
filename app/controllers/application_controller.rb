@@ -1,5 +1,32 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  helper_method :counta
+
+def sample
+	current_valuation = 0
+	current_karma = 0
+
+	SCHEDULER.every '2s' do
+	last_valuation = current_valuation
+	last_karma     = current_karma
+	current_valuation = rand(100)
+	current_karma     = rand(200000)
+
+	send_event('valuation', { current: current_valuation, last: last_valuation })
+	send_event('karma', { current: current_karma, last: last_karma })
+	send_event('synergy',   { value: rand(100) })
+end
+end
+
+	def auto2
+		@counta = 0
+		until @counta >= 10 do
+			p "#{@counta}"
+			sleep (1)
+			@counta = @counta + 1
+		end
+		p "I got here"
+	end
 
 	def test
 		delete_table :two_outputs
@@ -11,25 +38,37 @@ class ApplicationController < ActionController::Base
 		rake db:migrate
 	end
 
-	def create_master_databse
-
-	end
-
-	def testb
+	def test_database_progress
 	  	@timerstart = Time.new
-	  	sleep(166)
+	  	@count = 0
+	  	@total = 110*110
+	  	aRes = 0.0
+	  	bRes = 0.0
+	  	until bRes >= 10.0 do
+	    	until aRes >= 10.0 do
+	      	@two_result = TwoResult.new({"R1"=>'%.1f' % [aRes], "R2"=>'%.1f' % [bRes]})
+	      	@two_result.save
+	      	logger.info "Written #{'%.1f' % [aRes]} and #{'%.1f' % [bRes]} to database"
+	      	aRes = aRes +0.1
+	    	@count +1
+	    	end
+		bRes = bRes +0.1
+		aRes = 0.0		    	
+    	end
 	  	@timerend = Time.new
 	  	@duration = (@timerend - @timerstart) 
 	  	@mins = (@duration / 60)
 	  	@secs = (@duration % 60)
 	  	case 
 	  		when @mins < 1
-	  			p "The total processing took #{'%.2f' % [@duration]} seconds"
+	  			logger.info "The total processing took #{'%.2f' % [@duration]} seconds"
 	  		when @mins < 2
-	  			p "The total processing took #{'%.0f' % [@mins]} min and #{'%.2f' % [@secs]} seconds"
+	  			logger.info "The total processing took #{'%.0f' % [@mins]} min and #{'%.2f' % [@secs]} seconds"
 			when @mins >= 2
-				p "The total processing took #{'%.0f' % [@mins]} mins and #{'%.2f' % [@secs]} seconds"
+				logger.info "The total processing took #{'%.0f' % [@mins]} mins and #{'%.2f' % [@secs]} seconds"
 		end
+	  	logger.info "*************************************************************"
+	  	logger.info "Finished function to the end"
 	end
 
 	def create_master_database
