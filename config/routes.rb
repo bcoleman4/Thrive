@@ -16,11 +16,13 @@ Rails.application.routes.draw do
 
   get '/output2', to: 'two_outputs#output2'
 
-  get '/', to: 'application#dashboard'
+  #get '/', to: 'application#dashboard'
   get '/combinations', to: 'application#combinations'
   get '/results', to: 'application#results'
   get '/criteria', to: 'appliciation#criteria'
   get '/test_database_progress', to: 'application#test_database_progress'
   get '/sample', to: 'application#sample'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root 'application#hello'
+  get 'pdf', to: 'application#pdf'
 end

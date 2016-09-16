@@ -1,24 +1,74 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   helper_method :counta
+  helper_method :create_a_pdf
 
-def sample
-	current_valuation = 0
-	current_karma = 0
+	require 'prawn'
 
-	SCHEDULER.every '2s' do
-	last_valuation = current_valuation
-	last_karma     = current_karma
-	current_valuation = rand(100)
-	current_karma     = rand(200000)
+	def pdf
+		#function :create_a_pdf
+		img = "#{Prawn::DATADIR}/images/ferrari.png"
+		Prawn::Document.generate("background.pdf",
+ 		:background => img,
+		:margin => 100
+		) do
+			text "My report caption", :size => 18, :align => :right
+		 	move_down font.height * 2
+		 	text "Here is my text explaning this report. " * 20,
+		 	:size => 12, :align => :left, :leading => 2
+		 	move_down font.height
+		 	text "I'm using a soft background. " * 40,
+		 	:size => 12, :align => :left, :leading => 2
+		end
 
-	send_event('valuation', { current: current_valuation, last: last_valuation })
-	send_event('karma', { current: current_karma, last: last_karma })
-	send_event('synergy',   { value: rand(100) })
-end
-end
+		pdf = Prawn::Document.new
+		pdf.text "Hello World"
+		pdf.text "We are still on the initial page for this example. Now I'll ask " + "Prawn to gently start a new page. Please follow me to the next page."
+		pdf.start_new_page
+		pdf.text "See. We've left the previous page behind."
+		pdf.start_new_page
+		pdf.stroke_horizontal_rule
+		pdf.pad(20) { pdf.text "Text padded both before and after." }
+		pdf.stroke_horizontal_rule
+		pdf.pad_top(20) { pdf.text "Text padded on the top." }
+		pdf.stroke_horizontal_rule
+		pdf.pad_bottom(20) { pdf.text "Text padded on the bottom." }
+		pdf.stroke_horizontal_rule
+		pdf.move_down 30
+		pdf.text "Text written before the float block."
+		pdf.float do
+			pdf.move_down 30
+			pdf.bounding_box([0, pdf.cursor], :width => 200) do
+				pdf.text "Text written inside the float block."
+				pdf.stroke_bounds
+			end
+		end
+		pdf.text "Text written after the float block."
+		pdf.start_new_page
+		pdf.text "The image will go right below this line of text."
+		pdf.image "#{Prawn::DATADIR}/images/ferrari.png"
+		pdf.render_file "assignment.pdf"
 
-	def auto2
+		Prawn::Document.generate("hello.pdf") do
+	  		text "Hello World!"
+	  	end
+	end
+
+	def hello
+    	render html: "hello, world!"
+  	end
+
+  	def auto2
+  		@switch = TRUE
+  		p @switch
+  		#sleep(3)
+
+  		#@countc = auto2.countb
+  		#@switch = FALSE
+  		#p @switch
+  	end 
+
+	def auto2a
 		@counta = 0
 		until @counta >= 10 do
 			p "#{@counta}"
