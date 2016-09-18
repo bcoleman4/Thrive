@@ -17,6 +17,10 @@ class TwoResultsController < ApplicationController
   def new
     @two_result = TwoResult.new
   end
+  
+  def newa
+    @two_result = TwoResult.new
+  end
 
   # GET /two_results/1/edit
   def edit

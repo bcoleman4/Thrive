@@ -32,6 +32,12 @@ gem 'jbuilder', '~> 2.5'
 # Used for background processing
 gem 'resque'
 
+gem 'rufus-scheduler'
+
+gem 'delayed_job'
+
+gem 'daemons'
+
 # Used for charting on page
 gem 'chartkick'
 

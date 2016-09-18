@@ -3,7 +3,17 @@ class ApplicationController < ActionController::Base
   helper_method :counta
   helper_method :create_a_pdf
 
+  	#require 'fastthread'
 	require 'prawn'
+	#require 'openwfe/util/scheduler'
+	require 'rufus-scheduler'
+
+	def input
+		@rows = 5
+	end
+	def input2
+		@rows = 5
+	end
 
 	def pdf
 		#function :create_a_pdf
@@ -54,11 +64,53 @@ class ApplicationController < ActionController::Base
 	  	end
 	end
 
-	def hello
-    	render html: "hello, world!"
+
+	def auto2
+		t = Thread.new do
+			@de = 0
+		  render "pdf"
+		  #b = Thread.new do
+		  #	redirect_back(fallback_location: '/pdf')
+		  #end
+
+		  while (@de < 10) do
+		    p "@de = #{@de} at this point"
+		    #respond_to do |format|
+  				#format.js {render inline: "location.reload();" }
+			#end
+
+		    sleep 5
+		    @de = @de +1
+		  end
+		end
+
+		t.join # wait for thread to exit (never, in this case)
+	end
+
+	def hello2
+		scheduler = Scheduler.new
+		scheduler.start
+
+		# Simple usage
+		scheduler.schedule_every('2s') { p 'every 2 seconds' } 
+		scheduler.schedule_every('5m') { p 'every 5 minutes' }
+		scheduler.schedule_every('1d') { p 'every day' }
+
+		# More fine-grained control + schedule task once.
+		scheduler.schedule_in('3d2m10s') do
+		    p 'after 3 days 2 minutes and 10 seconds stopping the scheduler and exiting...'
+		    scheduler.do_stop
+		end
+
+		# Cron-string scheduling. There is something for everyone here!
+		scheduler.schedule('1-60 * * * *') do
+		    p 'perform task'
+		end
+
+		scheduler.join
   	end
 
-  	def auto2
+  	def auto3
   		@switch = TRUE
   		p @switch
   		#sleep(3)

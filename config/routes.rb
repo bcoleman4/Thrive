@@ -25,4 +25,8 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'application#hello'
   get 'pdf', to: 'application#pdf'
+  get 'input', to: 'application#input'
+  get 'input2', to: 'application#input2'
+
+  get 'two_results/newa', to: 'two_results#newa'
 end
