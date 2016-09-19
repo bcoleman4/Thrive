@@ -17,9 +17,9 @@ class TwoResultsController < ApplicationController
   def new
     @two_result = TwoResult.new
   end
-  
-  def newa
-    @two_result = TwoResult.new
+
+  def newb
+    p "made it"
   end
 
   # GET /two_results/1/edit
@@ -33,7 +33,7 @@ class TwoResultsController < ApplicationController
 
     respond_to do |format|
       if @two_result.save
-        format.html { redirect_to @two_result, notice: 'Two result was successfully created.' }
+        format.html { redirect_to '/two_result/'+ TwoResult.find(params[:id]) + '/edit', notice: 'Two result was successfully created.' }
         format.json { render :show, status: :created, location: @two_result }
       else
         format.html { render :new }
